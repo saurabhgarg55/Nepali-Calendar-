@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#08382A"/>
+      <stop offset="50%" stop-color="#0B4D3A"/>
+      <stop offset="100%" stop-color="#145E47"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Calendar card -->
+  <g filter="url(#shadow)">
+    <!-- Main white card -->
+    <rect x="76" y="86" width="360" height="340" rx="36" fill="#FFFFFF"/>
+    
+    <!-- Top red header for calendar card (festive Nepali crimson) -->
+    <path d="M 76,122 C 76,102 92,86 112,86 L 400,86 C 420,86 436,102 436,122 L 436,176 L 76,176 Z" fill="#DC2626"/>
+    
+    <!-- Calendar rings/loops -->
+    <rect x="144" y="66" width="20" height="38" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="4"/>
+    <rect x="348" y="66" width="20" height="38" rx="8" fill="#F8FAFC" stroke="#94A3B8" stroke-width="4"/>
+
+    <!-- Header Text: BIKRAM SAMBAT २०८३ -->
+    <text x="256" y="142" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#FFFFFF" text-anchor="middle" letter-spacing="2">NEPALI CALENDAR</text>
+
+    <!-- Big Center Date in Devanagari & Latin -->
+    <text x="256" y="292" font-family="system-ui, -apple-system, sans-serif" font-size="108" font-weight="900" fill="#0B4D3A" text-anchor="middle">२२</text>
+    
+    <!-- Subtitle: KARTIK / BS & AD -->
+    <text x="256" y="348" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="26" font-weight="700" fill="#475569" text-anchor="middle">कार्तिक २०८३</text>
+    <text x="256" y="388" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="17" font-weight="600" fill="#0B4D3A" text-anchor="middle">BS ⇄ AD</text>
+  </g>
+
+  <!-- Decorative Corner Sun/Moon accent -->
+  <circle cx="106" cy="131" r="6" fill="#FEF08A"/>
+  <circle cx="406" cy="131" r="6" fill="#FEF08A"/>
+</svg>

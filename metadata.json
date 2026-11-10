@@ -1,0 +1,6 @@
+{
+  "name": "Nepali Calendar",
+  "description": "Fast, offline Bikram Sambat (BS) and English (AD) calendar with holidays, single & bulk Excel date converter, and PWA support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
