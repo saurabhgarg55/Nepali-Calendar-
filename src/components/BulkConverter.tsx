@@ -24,6 +24,7 @@ import {
 } from '../utils/parser';
 import { OutputFormat } from '../utils/dateConverter';
 import { toDevanagariDigits } from '../data/bsData';
+import { safeLocalStorage } from '../utils/storage';
 
 interface BulkConverterProps {
   language: 'en' | 'ne';
@@ -49,18 +50,18 @@ export const BulkConverter: React.FC<BulkConverterProps> = ({ language }) => {
 
   // Persistent user preferences
   const [dateOrder, setDateOrder] = useState<DateOrder>(() => {
-    return (localStorage.getItem(STORAGE_KEY_DATE_ORDER) as DateOrder) || 'DMY';
+    return (safeLocalStorage.getItem(STORAGE_KEY_DATE_ORDER) as DateOrder) || 'DMY';
   });
 
   const [outputFormat, setOutputFormat] = useState<OutputFormat>(() => {
     return (
-      (localStorage.getItem(STORAGE_KEY_OUTPUT_FORMAT) as OutputFormat) ||
+      (safeLocalStorage.getItem(STORAGE_KEY_OUTPUT_FORMAT) as OutputFormat) ||
       'DD_Month_YYYY'
     );
   });
 
   const [useNepaliDigits, setUseNepaliDigits] = useState<boolean>(() => {
-    return localStorage.getItem(STORAGE_KEY_NEPALI_DIGITS) === 'true';
+    return safeLocalStorage.getItem(STORAGE_KEY_NEPALI_DIGITS) === 'true';
   });
 
   const [copied, setCopied] = useState<boolean>(false);
@@ -68,15 +69,15 @@ export const BulkConverter: React.FC<BulkConverterProps> = ({ language }) => {
 
   // Sync settings to localStorage
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_DATE_ORDER, dateOrder);
+    safeLocalStorage.setItem(STORAGE_KEY_DATE_ORDER, dateOrder);
   }, [dateOrder]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_OUTPUT_FORMAT, outputFormat);
+    safeLocalStorage.setItem(STORAGE_KEY_OUTPUT_FORMAT, outputFormat);
   }, [outputFormat]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_NEPALI_DIGITS, String(useNepaliDigits));
+    safeLocalStorage.setItem(STORAGE_KEY_NEPALI_DIGITS, String(useNepaliDigits));
   }, [useNepaliDigits]);
 
   // Bulk conversion calculation

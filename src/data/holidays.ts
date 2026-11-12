@@ -101,12 +101,13 @@ export const HOLIDAYS_BY_YEAR: Record<number, HolidayItem[]> = {
   ],
 };
 
+import { safeLocalStorage } from '../utils/storage';
+
 const STORAGE_KEY_CUSTOM_NOTES = 'nepali_calendar_custom_notes_v1';
 
 export function getCustomNotes(): CustomNoteItem[] {
-  if (typeof window === 'undefined') return [];
   try {
-    const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_NOTES);
+    const raw = safeLocalStorage.getItem(STORAGE_KEY_CUSTOM_NOTES);
     if (!raw) return [];
     return JSON.parse(raw);
   } catch {
@@ -122,14 +123,14 @@ export function saveCustomNote(note: Omit<CustomNoteItem, 'id' | 'createdAt'>): 
     createdAt: Date.now(),
   };
   const updated = [...existing, newNote];
-  localStorage.setItem(STORAGE_KEY_CUSTOM_NOTES, JSON.stringify(updated));
+  safeLocalStorage.setItem(STORAGE_KEY_CUSTOM_NOTES, JSON.stringify(updated));
   return newNote;
 }
 
 export function deleteCustomNote(id: string): void {
   const existing = getCustomNotes();
   const updated = existing.filter((n) => n.id !== id);
-  localStorage.setItem(STORAGE_KEY_CUSTOM_NOTES, JSON.stringify(updated));
+  safeLocalStorage.setItem(STORAGE_KEY_CUSTOM_NOTES, JSON.stringify(updated));
 }
 
 /**

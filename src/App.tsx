@@ -31,6 +31,8 @@ import {
 import { MIN_BS_YEAR, MAX_BS_YEAR } from './data/bsData';
 import { Calendar, ArrowLeftRight, WifiOff } from 'lucide-react';
 
+import { safeLocalStorage } from './utils/storage';
+
 const STORAGE_KEY_LANG = 'nepali_calendar_lang';
 const STORAGE_KEY_DARK_MODE = 'nepali_calendar_dark_mode';
 
@@ -51,21 +53,25 @@ export default function App() {
 
   // 2. Language & Dark Mode preferences
   const [language, setLanguage] = useState<'en' | 'ne'>(() => {
-    return (localStorage.getItem(STORAGE_KEY_LANG) as 'en' | 'ne') || 'en';
+    return (safeLocalStorage.getItem(STORAGE_KEY_LANG) as 'en' | 'ne') || 'en';
   });
 
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_DARK_MODE);
+    const saved = safeLocalStorage.getItem(STORAGE_KEY_DARK_MODE);
     if (saved !== null) return saved === 'true';
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    try {
+      return typeof window !== 'undefined' && !!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    } catch {
+      return false;
+    }
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_LANG, language);
+    safeLocalStorage.setItem(STORAGE_KEY_LANG, language);
   }, [language]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_DARK_MODE, String(isDarkMode));
+    safeLocalStorage.setItem(STORAGE_KEY_DARK_MODE, String(isDarkMode));
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
     } else {
