@@ -97,6 +97,20 @@ export const DayDetailModal: React.FC<DayDetailModalProps> = ({
     onRefreshHolidays();
   };
 
+  const bsDayPad = String(day).padStart(2, '0');
+  const bsMonthPad = String(month).padStart(2, '0');
+  const bsYearStrVal = String(year);
+  const bsDateFormatted = isNe
+    ? `${toDevanagariDigits(bsDayPad)}/${toDevanagariDigits(bsMonthPad)}/${toDevanagariDigits(bsYearStrVal)}`
+    : `${bsDayPad}/${bsMonthPad}/${bsYearStrVal}`;
+
+  const adDayPad = String(conversion.ad.day).padStart(2, '0');
+  const adMonthPad = String(conversion.ad.month).padStart(2, '0');
+  const adYearStrVal = String(conversion.ad.year);
+  const adDateFormatted = isNe
+    ? `${toDevanagariDigits(adDayPad)}/${toDevanagariDigits(adMonthPad)}/${toDevanagariDigits(adYearStrVal)}`
+    : `${adDayPad}/${adMonthPad}/${adYearStrVal}`;
+
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4">
       {/* Backdrop */}
@@ -114,11 +128,12 @@ export const DayDetailModal: React.FC<DayDetailModalProps> = ({
               </span>
             </div>
             <div>
-              <h2 className="text-lg font-bold text-stone-900 dark:text-stone-100 leading-tight">
-                {bsDayStr} {bsMonthName} {bsYearStr}
+              <h2 className="text-lg font-bold text-stone-900 dark:text-stone-100 leading-tight font-mono tracking-tight flex items-center gap-1.5">
+                <span>{bsDateFormatted}</span>
+                <span className="text-xs px-1.5 py-0.5 rounded font-bold bg-[#0B4D3A]/10 text-[#0B4D3A] dark:bg-emerald-900/40 dark:text-emerald-300 font-sans">BS</span>
               </h2>
-              <p className="text-xs font-semibold text-[#0B4D3A] dark:text-emerald-400">
-                {weekdayName}
+              <p className="text-xs font-semibold text-[#0B4D3A] dark:text-emerald-400 mt-0.5">
+                {weekdayName} <span className="text-stone-400 font-normal">({bsMonthName})</span>
               </p>
             </div>
           </div>
@@ -137,12 +152,13 @@ export const DayDetailModal: React.FC<DayDetailModalProps> = ({
             <span className="text-[10px] font-bold tracking-wider uppercase text-stone-500 dark:text-stone-400">
               {isNe ? 'अंग्रेजी मिति (AD)' : 'Gregorian (AD) Date'}
             </span>
-            <p className="text-sm font-bold text-stone-900 dark:text-stone-100 mt-0.5">
-              {adDayStr} {adMonthName} {adYearStr} ({weekdayName})
+            <p className="text-sm font-bold text-stone-900 dark:text-stone-100 mt-0.5 font-mono tracking-tight flex items-center gap-1.5">
+              <span>{adDateFormatted}</span>
+              <span className="text-xs text-stone-500 font-sans font-medium">({weekdayName})</span>
             </p>
           </div>
-          <span className="text-xs px-2.5 py-1 rounded-lg font-bold bg-[#0B4D3A]/10 text-[#0B4D3A] dark:bg-emerald-900/40 dark:text-emerald-300">
-            {conversion.adDateStr}
+          <span className="text-xs px-2.5 py-1 rounded-lg font-bold font-mono bg-[#0B4D3A]/10 text-[#0B4D3A] dark:bg-emerald-900/40 dark:text-emerald-300">
+            {adDateFormatted} AD
           </span>
         </div>
 

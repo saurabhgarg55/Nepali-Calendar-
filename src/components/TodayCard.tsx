@@ -10,7 +10,6 @@ import {
   BS_MONTH_NAMES_NE,
   WEEKDAYS_FULL_EN,
   WEEKDAYS_FULL_NE,
-  AD_MONTH_NAMES_SHORT,
   toDevanagariDigits,
 } from '../data/bsData';
 import { HolidayItem } from '../data/holidays';
@@ -38,12 +37,26 @@ export const TodayCard: React.FC<TodayCardProps> = ({
   const weekdayName = isNe
     ? WEEKDAYS_FULL_NE[todayBs.weekday]
     : WEEKDAYS_FULL_EN[todayBs.weekday];
-  const adMonthName = AD_MONTH_NAMES_SHORT[todayAd.month - 1];
+
+  // Format BS date as DD/MM/YYYY (e.g. 26/07/2083)
+  const bsDayPad = String(todayBs.day).padStart(2, '0');
+  const bsMonthPad = String(todayBs.month).padStart(2, '0');
+  const bsYearStr = String(todayBs.year);
+
+  const bsDateFormatted = isNe
+    ? `${toDevanagariDigits(bsDayPad)}/${toDevanagariDigits(bsMonthPad)}/${toDevanagariDigits(bsYearStr)}`
+    : `${bsDayPad}/${bsMonthPad}/${bsYearStr}`;
+
+  // Format AD date as DD/MM/YYYY (e.g. 12/11/2026)
+  const adDayPad = String(todayAd.day).padStart(2, '0');
+  const adMonthPad = String(todayAd.month).padStart(2, '0');
+  const adYearStr = String(todayAd.year);
+
+  const adDateFormatted = isNe
+    ? `${toDevanagariDigits(adDayPad)}/${toDevanagariDigits(adMonthPad)}/${toDevanagariDigits(adYearStr)}`
+    : `${adDayPad}/${adMonthPad}/${adYearStr}`;
 
   const bsDayDisplay = isNe ? toDevanagariDigits(todayBs.day) : todayBs.day;
-  const bsYearDisplay = isNe ? toDevanagariDigits(todayBs.year) : todayBs.year;
-  const adDayDisplay = isNe ? toDevanagariDigits(todayAd.day) : todayAd.day;
-  const adYearDisplay = isNe ? toDevanagariDigits(todayAd.year) : todayAd.year;
 
   // Filter public and restricted holidays today
   const primaryHoliday = holidays.find((h) => h.type === 'public') || holidays[0];
@@ -74,14 +87,17 @@ export const TodayCard: React.FC<TodayCardProps> = ({
             </span>
           </div>
 
-          {/* Center Info: BS Month Year, Weekday, AD Date */}
+          {/* Center Info: BS Date (DD/MM/YYYY), Weekday, AD Date (DD/MM/YYYY) */}
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100">
-                {bsMonthName} {bsYearDisplay}
+              <span className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 font-mono tracking-tight">
+                {bsDateFormatted}
               </span>
               <span className="text-xs px-1.5 py-0.5 rounded font-bold bg-[#0B4D3A]/10 text-[#0B4D3A] dark:bg-emerald-900/40 dark:text-emerald-300">
                 BS
+              </span>
+              <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">
+                ({bsMonthName})
               </span>
             </div>
 
@@ -89,12 +105,13 @@ export const TodayCard: React.FC<TodayCardProps> = ({
               {weekdayName}
             </p>
 
-            {/* AD date row */}
+            {/* AD date row in DD/MM/YYYY format */}
             <p className="text-xs font-medium text-stone-500 dark:text-stone-400 mt-1 flex items-center gap-1">
               <CalendarDays className="w-3.5 h-3.5 text-stone-400 dark:text-stone-500" />
-              <span>
-                {adDayDisplay} {adMonthName} {adYearDisplay} <span className="text-[10px] text-stone-400 uppercase font-bold">AD</span>
+              <span className="font-mono font-semibold">
+                {adDateFormatted}
               </span>
+              <span className="text-[10px] text-stone-400 uppercase font-bold">AD</span>
             </p>
           </div>
         </div>
@@ -110,7 +127,9 @@ export const TodayCard: React.FC<TodayCardProps> = ({
               }`}
             >
               <Sparkles className="w-3 h-3 shrink-0" />
-              <span className="truncate">{primaryHoliday.type === 'public' ? (isNe ? 'सार्वजनिक बिदा' : 'Public Holiday') : (isNe ? 'पर्व / दिवस' : 'Festival')}</span>
+              <span className="truncate">
+                {primaryHoliday.type === 'public' ? (isNe ? 'सार्वजनिक बिदा' : 'Public Holiday') : (isNe ? 'पर्व / दिवस' : 'Festival')}
+              </span>
             </span>
             <p className="text-xs font-bold text-red-600 dark:text-red-400 mt-1 line-clamp-2 leading-tight">
               {isNe ? primaryHoliday.name_ne : primaryHoliday.name_en}

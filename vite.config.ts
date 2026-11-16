@@ -1,28 +1,41 @@
+import fs from 'fs';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
-export default defineConfig(() => {
+export default defineConfig(({ command }) => {
+  const base = command === 'build' ? '/Nepali-Calendar-/' : '/';
+
   return {
-    base: './',
+    base,
+    build: {
+      outDir: 'docs',
+      emptyOutDir: true,
+    },
     plugins: [
       react(),
       tailwindcss(),
       VitePWA({
         registerType: 'autoUpdate',
-        includeAssets: ['icon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
+        includeAssets: [
+          'icon.svg',
+          'apple-touch-icon.png',
+          'pwa-192x192.png',
+          'pwa-512x512.png',
+          'pwa-maskable-512x512.png',
+        ],
         manifest: {
-          id: './',
+          id: base,
           name: 'Nepali Calendar',
           short_name: 'NepaliCal',
           description: 'Fast, offline Bikram Sambat & AD calendar, holidays, and bulk Excel date converter.',
           theme_color: '#0B4D3A',
           background_color: '#ffffff',
           display: 'standalone',
-          start_url: './',
-          scope: './',
+          start_url: base,
+          scope: base,
           icons: [
             {
               src: 'pwa-192x192.png',
@@ -52,6 +65,15 @@ export default defineConfig(() => {
           type: 'module',
         },
       }),
+      {
+        name: 'emit-nojekyll',
+        closeBundle() {
+          const outDir = path.resolve(process.cwd(), 'docs');
+          if (fs.existsSync(outDir)) {
+            fs.writeFileSync(path.join(outDir, '.nojekyll'), '');
+          }
+        },
+      },
     ],
     resolve: {
       alias: {

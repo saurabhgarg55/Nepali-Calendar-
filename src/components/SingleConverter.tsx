@@ -59,21 +59,25 @@ export const SingleConverter: React.FC<SingleConverterProps> = ({
     try {
       if (direction === 'AD_TO_BS') {
         const res = adToBs(adYear, adMonth, adDay);
+        const ddmm = formatBsDate(res.bs, 'DD/MM/YYYY', isNe);
+        const monthName = isNe ? BS_MONTH_NAMES_NE[res.bs.month - 1] : BS_MONTH_NAMES_EN[res.bs.month - 1];
         return {
-          formatted: formatBsDate(res.bs, 'DD_Month_YYYY', isNe),
+          formatted: `${ddmm}`,
+          monthSubtitle: monthName,
           weekday: isNe ? WEEKDAYS_FULL_NE[res.bs.weekday] : WEEKDAYS_FULL_EN[res.bs.weekday],
-          fullText: `${res.bs.year}-${String(res.bs.month).padStart(2, '0')}-${String(res.bs.day).padStart(2, '0')} (${formatBsDate(res.bs, 'DD_Month_YYYY', false)})`,
-          standard: `${formatBsDate(res.bs, 'DD_Month_YYYY', isNe)}`,
+          standard: `${ddmm}`,
           bs: res.bs,
           ad: res.ad,
         };
       } else {
         const res = bsToAd(bsYear, bsMonth, bsDay);
+        const ddmm = formatAdDate(res.ad, 'DD/MM/YYYY', isNe);
+        const monthName = AD_MONTH_NAMES_FULL[res.ad.month - 1];
         return {
-          formatted: formatAdDate(res.ad, 'DD_Month_YYYY', isNe),
+          formatted: `${ddmm}`,
+          monthSubtitle: monthName,
           weekday: isNe ? WEEKDAYS_FULL_NE[res.ad.weekday] : WEEKDAYS_FULL_EN[res.ad.weekday],
-          fullText: `${res.ad.year}-${String(res.ad.month).padStart(2, '0')}-${String(res.ad.day).padStart(2, '0')}`,
-          standard: `${formatAdDate(res.ad, 'DD_Month_YYYY', isNe)}`,
+          standard: `${ddmm}`,
           bs: res.bs,
           ad: res.ad,
         };
@@ -272,11 +276,11 @@ export const SingleConverter: React.FC<SingleConverterProps> = ({
                 ? 'रूपान्तरित अंग्रेजी मिति'
                 : 'CONVERTED GREGORIAN DATE'}
             </span>
-            <p className="text-2xl sm:text-3xl font-black text-stone-900 dark:text-stone-100 mt-1 leading-tight">
+            <p className="text-2xl sm:text-3xl font-black text-stone-900 dark:text-stone-100 mt-1 leading-tight font-mono tracking-tight">
               {conversionResult.formatted}
             </p>
             <p className="text-xs font-bold text-[#0B4D3A] dark:text-emerald-400 mt-0.5">
-              {conversionResult.weekday}
+              {conversionResult.weekday} <span className="text-stone-500 font-normal">({conversionResult.monthSubtitle})</span>
             </p>
           </div>
 
